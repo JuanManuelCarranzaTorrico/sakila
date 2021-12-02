@@ -8,17 +8,39 @@
   <p>Nos alegra tenerte aqui</p>
   <p>🎉🎉¿Aun no te registras? Sigue el siguiente boton para registrarte! 🎉🎉</p>
   <hr>
-  <router-link :to="`/datos/$this.$route.params.id`">
+  <router-link :to="`/datos/${$route.params.id}`">
         <button type="button" class="btn btn-outline-success">Registrarse</button></router-link>
 </div>
 
 <div class="container " >
     <div class="row align-items-start">
-    Estrenos
+    🎥Las Mas Vistas Todos los tiempos🎥
     </div>
     <keep-alive>
-  <div class="d-flex flex-row bd-highlight mb-3">
+  <div class="d-flex flex-row flex-nowrap overflow-auto">
       <div v-for="item in arrayBlog" :key="item.filmId">
+    
+      
+      <div class="card " style="width: 18rem;">
+  <img src="https://picsum.photos/200/300?random=2" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ item.title }}</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <button type="button" class="btn btn-outline-info" @click="AgregarCarrito(item.filmId,item.title)">Info</button>
+  
+  </div>
+        
+      
+  </div>
+    </div>
+    
+  </div>
+  </keep-alive>
+  <div class="row align-items-start">
+   🎥 Estrenos🎥
+    </div>
+  <div class="d-flex flex-row flex-nowrap overflow-auto">
+      <div v-for="item in arrayTop" :key="item.filmId">
     
       
       <div class="card " style="width: 18rem;">
@@ -37,12 +59,11 @@
     </div>
     
   </div>
-  </keep-alive>
   <div class="row align-items-start">
-    Estrenos
+    🎥Las Mas vistas la ultima semana🎥
     </div>
-  <div class="d-flex flex-row bd-highlight mb-3">
-      <div v-for="item in arrayTop" :key="item.filmId">
+  <div class="d-flex flex-row flex-nowrap overflow-auto">
+      <div v-for="item in arrayWeek" :key="item.filmId">
     
       
       <div class="card " style="width: 18rem;">
@@ -78,7 +99,8 @@ export default {
     data() {
         return {
             arrayBlog: [],
-            arrayTop: []
+            arrayTop: [],
+            arrayWeek: []
         }
     },
     methods: {
@@ -106,6 +128,27 @@ export default {
                 console.log(error)
             }
             return
+        },
+        async consumirApi3(){
+            try {
+                const data1 = await fetch(`http://localhost:8080/main2/${this.$route.params.id}`)
+                const array1 = await data1.json()
+                console.log("top10")
+                console.log(array1)
+                this.arrayWeek = array1;
+                
+            } catch (error) {
+                console.log(error)
+            }
+            return
+        },
+        AgregarCarrito(id,title){
+            var miObjeto = { FilmId: id, Title: title };
+            localStorage.setItem('datos', JSON.stringify(miObjeto));
+            miObjeto = { FilmId: id, Title: title };
+            var guardado = localStorage.getItem('datos');
+            console.log('objetoObtenido: ', JSON.parse(guardado));
+
         }
 
     },
@@ -114,6 +157,7 @@ export default {
     created() {
         this.consumirApi();
         this.consumirApi2();
+        this.consumirApi3();
     
     }
 }

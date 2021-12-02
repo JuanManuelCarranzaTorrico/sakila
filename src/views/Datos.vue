@@ -94,7 +94,7 @@ export default {
             console.log(this.addressId);
             this.storeId=this.$route.params.id
             console.log("tienda "+this.storeId)
-            this.consumirPost()
+            //this.consumirPost()
 
 
         },
