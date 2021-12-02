@@ -1,8 +1,17 @@
 <template>
 <div>
     <carrito-1></carrito-1>
-    
+    <br>
 <!-- <h2>Parámetro: {{ $route.params.id }}</h2> -->
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Bienvenid@</h4>
+  <p>Nos alegra tenerte aqui</p>
+  <p>🎉🎉¿Aun no te registras? Sigue el siguiente boton para registrarte! 🎉🎉</p>
+  <hr>
+  <router-link :to="`/datos/$this.$route.params.id`">
+        <button type="button" class="btn btn-outline-success">Registrarse</button></router-link>
+</div>
+
 <div class="container " >
     <div class="row align-items-start">
     Estrenos
