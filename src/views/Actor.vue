@@ -15,9 +15,7 @@
   <div class="card-body">
     <h5 class="card-title">{{ item.title }}</h5>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <router-link :to="`/film/${item.filmId}`">
-        {{ item.title }}
-      </router-link>
+    <button type="button" class="btn btn-outline-info" @click="AgregarCarrito(item.filmId,item.title)">Agregar Al Carrito</button>
   
   </div>
         
@@ -47,7 +45,8 @@ export default {
             arrayTop: [],
             name: String,
             surname: String,
-            temp: String
+            temp: String,
+            filmlist: []
         }
     },
     methods: {
@@ -71,11 +70,32 @@ export default {
             this.surname=nameArray[1]
 
 
-        }
+        },
        
+
+    AgregarCarrito(id,title){
+            
+      this.filmlist.push({Id: id, Title: title});
+      this.saveCarrito();
+
+        },
+        saveCarrito(){
+            const parsed = JSON.stringify(this.filmlist);
+      localStorage.setItem('films', parsed);
+      var guardado = localStorage.getItem('films');
+      console.log('objetoObtenido: ', JSON.parse(guardado))
+        }
 
     },
     
+    mounted() {
+        if (localStorage.getItem('films')) {
+      try {
+        this.filmlist = JSON.parse(localStorage.getItem('films'));
+      } catch(e) {
+        localStorage.removeItem('films');
+      }
+    }},
     
     created() {
         this.consumirApi();
